@@ -6,6 +6,18 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    userPic: {
+        type: String,
+        required: true,
+    },
+    userName: {
+        type: String,
+        required: true,
+    },
+    userTitle: {
+        type: String,
+        required: true,
+    },
     title: {
         type: String,
         required: true,
@@ -14,13 +26,17 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    cover: {
+    projectCover: {
         type: String,
         required: true,
     },
     uploadImg: {
         type: [String],
         required:false,
+    },
+    desc: {
+        type: [String],
+        required:true,
     },
     tags: {
         type: [String],

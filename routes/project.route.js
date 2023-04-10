@@ -1,12 +1,16 @@
 const express = require('express');
+const verifyToken = require('../middleware/jwt');
+const { createProject, getProject, getProjects } = require('../controllers/project.controller');
 const router = express.Router();
 
-// // UPDATE
-// router.put('/:id', verifyUser, updateUser)
+// // CREATE
+router.post('/:id', verifyToken, createProject)
 // // DELETE
-// router.delete('/:id', verifyUser, deleteUser)
+// router.delete('/:id', verifyToken, deleteUser)
 // // GET SPECIFICLY
-// router.get('/:id', verifyUser, getUser)
+router.get('/:id', getProject)
+// // GET PROJECTS
+router.get('/', getProjects)
 // GET ALL
 // router.get('/', allUser)
 

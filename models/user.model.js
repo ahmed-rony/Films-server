@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    fullName: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true,
@@ -16,11 +20,43 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    profileImg: {
+    talentTitle: {
+        type: String,
+        required: false,
+    },
+    profilePic: {
         type: String,
         required: false,
     },
     profileCover: {
+        type: String,
+        required: false,
+    },
+    availability: {
+        type: String,
+        required: false,
+    },
+    location: {
+        type: String,
+        required: false,
+    },
+    language: {
+        type: [String],
+        required: false,
+    },
+    skills: {
+        type: [String],
+        required: false,
+    },
+    skillLevel: {
+        type: [String],
+        required: false,
+    },
+    contract: {
+        type: String,
+        required: false,
+    },
+    about: {
         type: String,
         required: false,
     },

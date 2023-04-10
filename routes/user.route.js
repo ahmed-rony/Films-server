@@ -1,15 +1,15 @@
 const express = require('express');
-const { deleteUser } = require('../controllers/user.controller');
+const { deleteUser, updateUser, getUser, getUsers } = require('../controllers/user.controller');
 const verifyToken = require('../middleware/jwt');
 const router = express.Router();
 
 // // UPDATE
-// router.put('/:id', verifyUser, updateUser)
+router.put('/:id', verifyToken, updateUser)
 // // DELETE
 router.delete('/:id', verifyToken, deleteUser)
 // // GET SPECIFICLY
-// router.get('/:id', verifyUser, getUser)
+router.get('/:id', getUser)
 // GET ALL
-// router.get('/', allUser)
+router.get('/', getUsers)
 
 module.exports = router;
