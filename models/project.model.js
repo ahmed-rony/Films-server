@@ -47,13 +47,11 @@ const projectSchema = new mongoose.Schema({
         required: false,
     },
     likes: {
-        type: Number,
-        required: false,
-        default: 0,
+        type: Array,
+        default: [],
     },
     views: {
         type: Number,
-        required: false,
         default: 0,
     },
 

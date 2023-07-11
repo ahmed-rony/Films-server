@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const commentSchema = new mongoose.Schema({
-    porjectId: {
+    projectId: {
         type: String,
         required: true,
     },

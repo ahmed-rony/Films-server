@@ -18,7 +18,6 @@ const updateUser = async (req, res, next) => {
       { new: true }
     );
     res.status(200).send(updatedUser);
-    console.log(updatedUser);
   } catch (error) {
     next(error);
   }
@@ -38,14 +37,21 @@ const getUsers = async (req, res, next) => {
 
   const filters = {
     ...(q.userId && { _id: q.userId }),
-    ...(q.cat && { category: { $in: q.cat.split(",") } }),
+    ...(q.isTalent === "true" && { isTalent: true }),
+    ...(q.isTalent === "false" && { isTalent: false }),
+    ...(q.cat && {
+      skills: {
+        $in: q.cat.split(",").map((cat) => new RegExp(cat, "i"))
+      }
+    }),
     ...(q.search && {
       $or: [
         { talentTitle: { $regex: q.search, $options: "i" } },
-        { fullName: { $regex: q.search, $options: "i" } },
+        { fullName: { $regex: q.search, $options: "i" } }
       ]
     }),
   };
+
   try {
     const users = await User.find(filters);
     res.status(200).send(users);
@@ -68,4 +74,30 @@ const deleteUser = async (req, res, next) => {
   }
 }
 
-module.exports = { deleteUser, updateUser, getUser, getUsers };
+//follow a user
+
+const followUser = async (req, res, next) => {
+  
+  if (req.body.profileId !== req.params.id) {
+    try {
+      const user = await User.findById(req.params.id);
+      const currentUser = await User.findById(req.body.profileId);
+      if (!user.followers.includes(req.body.profileId)) {
+        await user.updateOne({ $push: { followers: req.body.profileId } });
+        await currentUser.updateOne({ $push: { followings: req.params.id } });
+        res.status(200).send("User has been followed");
+      } else {
+        await user.updateOne({ $pull: { followers: req.body.profileId } });
+        await currentUser.updateOne({ $pull: { followings: req.params.id } });
+        res.status(200).send("User has been unfollowed");
+      }
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    res.status(403).send("you can't follow yourself");
+  }
+};
+
+
+module.exports = { deleteUser, updateUser, getUser, getUsers, followUser };

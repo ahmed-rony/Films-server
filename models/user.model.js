@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    // pdfCV: {
+    //     type: String,
+    //     required: false,
+    // },
     availability: {
         type: String,
         required: false,
@@ -60,7 +64,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    isTalent:{
+    followers: {
+        type: Array,
+        default: [],
+    },
+    followings: {
+        type: Array,
+        default: [],
+    },
+    isTalent: {
         type: Boolean,
         default: false,
     }

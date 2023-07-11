@@ -12,6 +12,16 @@ const createProject = async (req, res, next) => {
         next(error);
     }
 }
+
+const UpdateProject = async (req, res, next) => {
+
+    try {
+        const interaction = await projectModel.findByIdAndUpdate(req.projectId, { $set: { likes: req.body._id, } }, { $inc: { views: req.body.view } }, { new: true });
+        res.status(201).send(interaction);
+    } catch (error) {
+        next(error);
+    }
+}
 const getProject = async (req, res, next) => {
 
     try {
@@ -39,4 +49,26 @@ const getProjects = async (req, res, next) => {
     }
 }
 
-module.exports = { createProject, getProject, getProjects };
+//Like the project
+
+const likeProject = async (req, res, next) => {
+
+    if (req.body.profileId !== req.params.id) {
+        try {
+            const project = await projectModel.findById(req.params.id);
+            if (!project.likes.includes(req.body.profileId)) {
+                await project.updateOne({ $push: { likes: req.body.profileId } });
+                res.status(200).send("Project has been liked");
+            } else {
+                await project.updateOne({ $pull: { likes: req.body.profileId } });
+                res.status(200).send("Project hasn't been liked yet.");
+            }
+        } catch (err) {
+            next(err);
+        }
+    } else {
+        res.status(403).send("you cannot like your project");
+    }
+};
+
+module.exports = { createProject, UpdateProject, getProject, getProjects, likeProject };
